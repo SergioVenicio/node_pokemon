@@ -1,5 +1,7 @@
 const express = require('express')
 
+require('express-async-errors')
+
 const pokemons = require('./controllers/pokemons')
 
 const host = 'localhost'

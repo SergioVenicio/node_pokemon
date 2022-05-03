@@ -10,17 +10,20 @@ const sortAbilities = (a, b) => {
   return -1;
 }
 
-const getPokemons = (req, res) => {
+const getPokemons = async (req, res) => {
   const name = req.params.name;
   console.log(`[getPokemons] start request with ${name}...`)
-  axios.get(`${baseUrl}/${name}`)
-    .then(httpResponse => {
-      const abilities = httpResponse.data.abilities.sort(sortAbilities)
-      res.send(JSON.stringify(abilities))
-    }).catch(err => {
-      console.warn('[getPokemons] pokemon not found')
-      res.status(404).send()
-    })
+
+  try {
+    const httpData = await axios.get(`${baseUrl}/${name}`)
+    const abilities = httpData.data.abilities.sort(sortAbilities)
+    res.send(JSON.stringify(abilities))
+  } catch {
+    console.warn('[getPokemons] pokemon not found')
+    res.status(404).send()
+  }
+
+  console.log(`[getPokemons] done`)
 }
 
 module.exports = {
